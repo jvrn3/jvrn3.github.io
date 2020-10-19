@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "The Little Schemer - Leitura comentada"
-date:   2019-03-23 21:03:36 +0530
+date:   2019-03-19
 categories: Books
 ---
 
@@ -40,9 +40,14 @@ O que me motivou a ler, também, foi que o autor do livro já escreveu vários o
 
 <a href="#chapter8">Capítulo 8 - Lambda the Ultimate</a>
 
+<a href="#chapter9">Capítulo 9 - And again, and Again and Again...</a>
 
+<a href="#chapter10">Capítulo 10 - What is the value of all this?</a>
+
+****
 <h2 id="chapter1">Capítulo 1 - Hello World</h2>
 O primeiro capítulo é bem simples e aborda algumas das principais palavras chaves da linguagem.
+
 ***
 * Recursão é o ato de definir um objeto ou resolver um problema em termo de si mesmo.
 * `car` é definido para listas não-vazias.
@@ -820,3 +825,8 @@ Aqui está a função com funções auxiliares
 Deste capítulo, foi isso que gostaria trazer. O próximo capítulo, o 8, trata das funções lambda. Sugiro bastante dar uma olhada!
 
 <h2 id="chapter8">Capítulo 8 - Lambda the Ultimate</h2>
+to be done
+<h2 id="chapter9">Capítulo 9 - And again, and Again and Again...</h2>
+to be done
+<h2 id="chapter10">Capítulo 10 - What is the value of all this? </h2>
+to be done

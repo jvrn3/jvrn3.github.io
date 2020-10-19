@@ -1,10 +1,11 @@
-title: Your awesome title
-author: GitHub User
-email: your-email@domain.com
+title: jvrn's Blog
+author: jvrn3
+email: jvrn@protonmail.com
 description: > # this means to ignore newlines until "show_exerpts:"
-  Write an awesome description for your new site here. You can edit this
-  line in _config.yml. It will appear in your document head meta (for
-  Google search results) and in your feed.xml site description.
+
+  Me chamo João Vitor Roma Neto, moro em Cambé, cidade metropolitana de Londrina - Paraná. Gosto de ler e compartilhar conhecimento.
+
+  Escrevo aqui sobre o que ando fazendo da minha vida. :)
 show_excerpts: true # set to true to show excerpts on the homepage
 
 # Minima date format
@@ -12,13 +13,13 @@ show_excerpts: true # set to true to show excerpts on the homepage
 sass:
   sass_dir: _sass
 plainwhite:
-  name: Adam Denisov
-  tagline: Developer. Designer
+  name: João Vitor R Neto
+  tagline: Developer
   date_format: "%b %-d, %Y"
   sitemap: true # set to true to generate sitemap.xml content
   search: true # set to true to enable searchbar
   dark_mode: true # set to true to add dark mode toggle
-  portfolio_image: "assets/portfolio.png" # the path from the base directory of the site to the image to display (no / at the start)
+  portfolio_image: "assets/gogoya.png" # the path from the base directory of the site to the image to display (no / at the start)
   html_lang: "en" # set the lang attribute of the <html> tag for the pages. See here for a list of codes: https://www.w3schools.com/tags/ref_country_codes.asp
   condensed_mobile:
     #- home
@@ -26,9 +27,10 @@ plainwhite:
     - post
   # generate social links in footer
   social_links:
-    twitter: samarsault
-    github:  samarsault
-    linkedIn: in/samarsault
+    #twitter: samarsault
+    github:  jvrn3
+    linkedIn: in/jvrn
+    telegram: joaonotelegram
     #rss: rss
     #dribbble: jekyll
     #flickr:   jekyll
