@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "The Little Schemer - Leitura comentada"
-date:   2019-03-19
+date:   2020-10-19
 categories: Books
 ---
 
