@@ -825,8 +825,179 @@ Aqui está a função com funções auxiliares
 Deste capítulo, foi isso que gostaria trazer. O próximo capítulo, o 8, trata das funções lambda. Sugiro bastante dar uma olhada!
 
 <h2 id="chapter8">Capítulo 8 - Lambda the Ultimate</h2>
-to be done
+
+Separei esse capítulo em dois porque trata de dois assuntos correlatos e que adicionam um complexidade maior no código, principalmente _continuations_.
+
+# Parte 1 - Funções que aceitam funções como parâmetros
+
+Vamos ver aqui as conhecidas funções que recebem funções como parâmetro.
+Lembra da função _rember_? Então, ela era definida para átomos. E se quiséssemos remover uma lista dentro de outra lista usando rember, o que precisamos fazer? Talvez você tenha pensado em replicar a função e mudar a comparação que ela faz. Uma regra básica que tentamos seguir no desenvolvimento de software - uma das mais importantes -, é o princípio DRY: Don't Repeat Yourself.
+
+Quanto mais código repetido temos, mais difícil de lidar com as mudanças. Por exemplo, suponha que você tem 5 funções `rember` diferente e descobre um bug na implementação que afeta todas essas funções. Para corrigir o bug, você precisa arrumar as 5 funções, um trabalho considerável! Imagine então que isso acontece em um sistema grande, que várias funções são dependentes umas das outas, estão em lugares separados, etc, seria muito estressante arrumar!
+
+Portanto, com essa digressão conseguimos ver como é importante definir funções com características mais genéricas.
+
+Um `rember` que aceita várias comparações diferentes é bem simples de implementar
+```scheme
+(define rember-f
+  (lambda (test? a l)
+    (cond
+      [(null? l) '()]
+      [(test? a (car l))
+       (rember-f test? a (cdr l))]
+      [else
+        (cons (car l)
+              (rember-f test? a (cdr l)))])))
+
+(check-equal? (rember-f = 2 '(1 2 3 4 5 6))
+              '(1 3 4 5 6))
+(check-equal? (rember-f eq? 'jelly '(jelly beans are good))
+              '(beans are good))
+(check-equal? (rember-f equal?
+                        '(pop corn)
+                        '(lemonade (pop corn) and (cake)))
+              '(lemonade and (cake)))
+
+```
+É possível fazer `test?` como parâmetro porque uma função em LISP nada mais é do que um valor também! Tudo é um valor.  A maior diferença deste _rember_ e do outro é que este aceita uma função, `test?`, e compara a partir dela na condição. Bem útil desenvolver funções que recebem funções, né?
+
+Uma função que os autores exploram bastante é a `insert-g`, que aceita uma função _seq_, e retorna outra função com _new_, _old_, _l_ como argumento. Primeiros vamos à definição.
+```scheme
+(define insert-g
+  (lambda (seq)
+    (lambda (new old l)
+      (cond
+        [(null? l) '()]
+        [(eq? old (car l))
+         (seq new old ((insert-g seq) new old (cdr l)))]
+        [else
+           (cons (car l) ((insert-g seq) new old (cdr l)))]))))
+```
+Essa função é, pelo nome, de inserção. Olhando pela segunda condição, verificamos que ela usa a função _seq_ quando o elemento da lista for igual ao parâmetro _old_. Por exemplo
+
+```scheme
+(define insertR (insert-g (lambda (new old l) (cons old (cons new l)))))
+(check-equal? (insertR 'it 'doing '(doing again)) '(doing it again))
+```
+
+passamos para o argumento _seq_ esta função que adiciona o novo elemento na direita.
+E se quiséssemos remover o elemento quando encontrado? Simples! Usando _insert-g_, ficaria assim:
+```scheme
+(define rember
+  (lambda (a l)
+    ((insert-g (lambda (new old l) l)) '_ a l)))
+(check-equal? (rember 'early '(the early bird catches the worm))
+              '(the bird catches the worm))
+  ```
+  Dois pontos a serem observados aqui
+  - Estamos chamamos a função com os 3 parâmetros, mas primeiro chamamos (insert-g função) e depois chamamos a outra função com os dois parâmetros.
+  - o segundo argumento, _new_, pode ser qualquer coisa, pois ele não é usado.
+
+Por último, gostaria de falar que as linguagens de programação que aceitam esses lambdas aninhados são chamadas de linguagens que implementam currying. Na verdade, a definição de currying é a de aplicação parcial de funções. As linguagens que realmente suportam esta técnica recebem um argumento por função, ou seja, o lambda recebe um único argumento. Por que isso? Para quando precisarmos, podermos usar a versão parcial delas, como no caso da _insert-g_. O legal é que você não precisa escrever cada função com um argumento, a própria linguagem traduz sua função em várias funções com um único argumento. Se quiser estudar esse assunto, procure sobre Haskell.
+
+
+# Parte 2 - Continuations
+
+Essa parte sobre Continuations foi a que achei a mais complicada do livro até então. O que seria isso?  Primeiramente, um exemplo
+
+```scheme
+(define rember&co
+  (lambda (a lat col)
+    (cond
+      [(null? lat) (col '() '())]
+      [(eq? (car lat) a)
+       (rember&co a
+                  (cdr lat)
+                  (lambda (newlat seen)
+                    (col newlat
+                         (cons (car lat) seen))))]
+      [else
+        (rember&co a
+                   (cdr lat)
+                   (lambda (newlat seen)
+                     (col (cons (car lat) newlat)
+                          seen)))])))
+```
+O que seria o argumento _col_? De acordo com o livro, _col_ vem de collector, também chamado de continuation.
+
+E qual a funcionalidade dele?
+Olhando para essa nossa função _rember&co_, estamos coletando os itens removidos em um lado, e os outros itens em outra lista e aplicando a função `col` neles. Qual a utilidade disso? Estamos realizando mais de uma operação naquela lista utilizando a mesma função. Se quisermos remover os itens de acordo com o parâmetro _a_ e, ao mesmo tempo, calcular quantos itens foram removidos, podemos usar essa função facilmente.
+
+Esse assunto é um pouco denso e o livro passa bem rapidamente, então certamente não é um aprofundamento no tema, mas deixei essa função para mostrar uma simples aplicação desse tema que não é tão incomum de ver por aí. Qualquer dúvida, pode entrar em contato comigo!
+
+
 <h2 id="chapter9">Capítulo 9 - And again, and Again and Again...</h2>
-to be done
+O que dizer desse capítulo? São tratados alguns temas bem importantes - e complicados - em computação.
+
+Primeiro, o problema da parada, em ingles [Halting Problem].
+Vamos seguir a linha do livro e mostrar um exemplo para explorar o assunto
+
+Digamos que temos uma função, eternity:
+```scheme
+(define eternity
+  (lambda (x)
+    (eternity x)))
+  ```
+  Essa função chama ela mesma infinitamente, sem alterar nenhuma estrutura. Sabemos então que essa função não para, correto?
+  Agora vamos olhar essa outra função, a [função de Ackermann].
+```scheme
+(define A
+  (lambda (n m)
+    (cond
+      [(zero? n) (add1 m)]
+      [(zero? m) (A (sub1 n) 1)]
+      [else (A (sub1 n)
+               (A n (sub1 m)))])))
+(check-equal? (A 1 1 ) 3)
+(check-equal? (A 1 0 ) 2)
+(check-equal? (A 2 2 ) 7)
+```
+Essa função para? Ela para para `(A 4 3)`? Não, ela fica em um loop infinito. Tente para ver! Os autores nos questionam, então, se é possível criar uma função _f_ que recebe como parâmetro outra função, _g_, e que retorna se ela para ou não. Bem fácil!
+
+Aqui um esboço, ela é tão simples que deixo como exercício para você.
+```scheme
+(define will-stop?
+    (lambda (f)
+        ...))
+```
+Brincadeira, não é não!! Mas vamos supor que esta função está pronta já. Problema resolvido.
+
+Se ela resolve todos os problemas, vamos testar funções.
+
+Para a função `(will-stop? length)` ela funciona perfeitamente, retornando `#t`.
+
+Vamos testar mais uma então, _last-try_,
+```scheme
+(define last-try
+  (lambda (x)
+    (and (will-stop? last-try) (eternity x))))
+```
+Se o argumento for `'()` ela para?
+Para determinarmos isso, precisamos do resultado de
+```scheme
+(and (will-stop? last-try) (eternity '()))
+```
+E qual é esse resultado?
+Depende do `(will-stop? last-try)`.
+Ok, vamos supor que last-try retorne #t, então
+```scheme
+(and #t (eternity '()))
+```
+Hmm, estranho. Qual o resultado disso? O resultad depende de `(eternity '())`, mas `(eternity x)` roda infinitamente. Logo, a função não para. Mas assumimos que ela parava! Então entramos em uma contradição.
+
+Vamos assumir então que essa função nunca vai parar.
+```scheme
+(and (will-stop? last-try) (eternity '()))
+(and #f (eternity '()))
+```
+Hmm, estranho de novo. A função `and` com qualquer coisa `#f` retorna `#f`. Então essa função vai parar, entrando em uma contradição de novo!
+
+Esse é o problema da parada! Não é possível criar uma função que determina se determinada função para ou não. Ela é importante porque marca um limite à computação.
+
+O outro tópico abordado é sobre as Y Combinators, essa parte é relativamente difícil, então sugiro que você use o Stepper do DrRacket e leia essa parte no livro. [Aqui] está um link que ajuda a entender um pouco melhor essa parte.
+
+[Halting Problem]: https://en.wikipedia.org/wiki/Halting_problem
+[função de Ackermann]: https://en.wikipedia.org/wiki/Ackermann_function
+[Aqui]: https://stackoverflow.com/questions/10499514/y-combinator-discussion-in-the-little-schemer/11864862#11864862
 <h2 id="chapter10">Capítulo 10 - What is the value of all this? </h2>
 to be done
