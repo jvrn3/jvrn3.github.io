@@ -1000,4 +1000,10 @@ O outro tópico abordado é sobre as Y Combinators, essa parte é relativamente 
 [função de Ackermann]: https://en.wikipedia.org/wiki/Ackermann_function
 [Aqui]: https://stackoverflow.com/questions/10499514/y-combinator-discussion-in-the-little-schemer/11864862#11864862
 <h2 id="chapter10">Capítulo 10 - What is the value of all this? </h2>
-to be done
+
+Cheguei até a escrever um pouco sobre esse capítulo, mas ele é bem denso e requer alguns dias de leitura.
+Salvei o [código] que fiz na leitura desse capítulo no Github. Precisa de alguns ajustes, como comentar melhor as funções e executar testes em cada função. Ademais, acredito que pode servir se estiver com alguma dúvida.
+
+
+
+[codigo]: https://github.com/jvrn3/tls-scheme-interpreter
