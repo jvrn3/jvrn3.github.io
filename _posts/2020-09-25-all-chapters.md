@@ -996,14 +996,14 @@ Esse é o problema da parada! Não é possível criar uma função que determina
 
 O outro tópico abordado é sobre as Y Combinators, essa parte é relativamente difícil, então sugiro que você use o Stepper do DrRacket e leia essa parte no livro. [Aqui] está um link que ajuda a entender um pouco melhor essa parte.
 
-[Halting Problem]: https://en.wikipedia.org/wiki/Halting_problem
-[função de Ackermann]: https://en.wikipedia.org/wiki/Ackermann_function
-[Aqui]: https://stackoverflow.com/questions/10499514/y-combinator-discussion-in-the-little-schemer/11864862#11864862
 <h2 id="chapter10">Capítulo 10 - What is the value of all this? </h2>
 
 Cheguei até a escrever um pouco sobre esse capítulo, mas ele é bem denso e requer alguns dias de leitura.
 Salvei o [código] que fiz na leitura desse capítulo no Github. Precisa de alguns ajustes, como comentar melhor as funções e executar testes em cada função. Ademais, acredito que pode servir se estiver com alguma dúvida.
 
 
+[Halting Problem]: https://en.wikipedia.org/wiki/Halting_problem
+[função de Ackermann]: https://en.wikipedia.org/wiki/Ackermann_function
+[Aqui]: https://stackoverflow.com/questions/10499514/y-combinator-discussion-in-the-little-schemer/11864862#11864862
+[código]: https://github.com/jvrn3/tls-scheme-interpreter
 
-[codigo]: https://github.com/jvrn3/tls-scheme-interpreter
