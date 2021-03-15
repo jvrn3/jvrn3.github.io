@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Um rápido exemplo de monkeypatching"
-date:   2020-12-16
+date:   2020-12-15
 categories: Programming
 ---
 Testes é um assunto bem abrangente e complicado. Em linhas gerais, testamos
